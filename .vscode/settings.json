@@ -1,0 +1,21 @@
+{
+  /* vscode */
+  // 设置未修改文件是否覆盖（预览）
+  "workbench.editor.enablePreview": false,
+  // 设置 tab 缩进
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  // 设置文件自动保存
+  "files.autoSave": "off",
+  // 设置忽略文件夹或者忽略文件
+  "files.exclude": {
+    "node_modules/": true
+  },
+  /* 插件 eslint */
+  // 设置 vscode 使用 eslint 检测的文件类型
+  "eslint.validate": [
+    "javascript"
+  ],
+  "editor.formatOnType": true,
+  "editor.formatOnSave": true
+}

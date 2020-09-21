@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+  <script type="text/javascript" src="dist/pepper.js"></script>
+</head>
+
+<body>
+  <div class="container" style="width:400px;height:400px;"></div>
+  <!-- <canvas id="canvas" width="600" height="600"></canvas> -->
+  <script type="text/javascript">
+    let { Ring } = Pepper;
+    let container = document.querySelector(".container");
+    let ring = new Ring(
+      container,
+      [
+        {
+          key: "棉花",
+          value: 1000,
+          color: "#0FBDA6"
+        },
+        {
+          key: "非会员",
+          value: 2000,
+          color: "#F86B83"
+        },
+        {
+          key: "棉苗",
+          value: 2000,
+          color: "#F9D26A"
+        },
+        {
+          key: "棉桃",
+          value: 3000,
+          color: "#3896E9"
+        }
+      ]
+    );
+    // setTimeout(() => {
+    //   ring.update([
+    //     // {
+    //     //   key: "棉花",
+    //     //   value: 1000,
+    //     //   color: "#0FBDA6"
+    //     // },
+    //     // {
+    //     //   key: "非会员",
+    //     //   value: 2000,
+    //     //   color: "#F86B83"
+    //     // },
+    //     {
+    //       key: "棉苗",
+    //       value: 2000,
+    //       color: "#F9D26A"
+    //     },
+    //     {
+    //       key: "棉桃",
+    //       value: 3000,
+    //       color: "#3896E9"
+    //     }
+    //   ])
+    // }, 1000);
+    setInterval(() => {
+      let data = [
+        {
+          key: "棉花",
+          value: Math.random() * 1000,
+          color: "#0FBDA6"
+        },
+        {
+          key: "非会员",
+          value: Math.random() * 1000,
+          color: "#F86B83"
+        },
+        {
+          key: "棉苗",
+          value: 2000,
+          color: "#F9D26A"
+        },
+        {
+          key: "棉桃",
+          value: 3000,
+          color: "#3896E9"
+        },
+        {
+          key: "棉花1",
+          value: Math.random() * 1000,
+          color: "#0ACFF6"
+        },
+        {
+          key: "棉花2",
+          value: Math.random() * 1000,
+          color: "#F89D83"
+        },
+      ];
+      // data.length = parseInt(Math.random() * 10);
+      ring.update(data);
+    }, 3000);
+
+  </script>
+</body>
+
+</html>
