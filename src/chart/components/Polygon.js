@@ -9,7 +9,9 @@ import Chart from "../Chart";
 class Polygon extends Chart {
   /**
    * @desc Polygon 构造函数
-   * @param {Array<Object>} points 坐标对象数组
+   * @param {Object} config 配置对象
+   *   @param setting
+   *     @param {Array<Object>} points 坐标对象数组
    */
   constructor(chartCollector, config, points) {
     super(chartCollector, config);

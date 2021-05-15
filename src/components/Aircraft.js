@@ -1,11 +1,9 @@
 "use strict";
 
-import { defaultConfig } from "../lib/chart/config";
-import { ChartCollector, Arc, Text, Rectangle } from "../lib/index";
+import { defaultConfig } from "../chart/config";
+import { ChartCollector, Arc, Text, Rectangle, Circle, Line } from "../index";
 
-const doNotDisplayColor = "#EBEBEB";
-
-class RingContainer {
+class Container {
   constructor(dom, data) {
     this.dom = dom;
     this.canvas = document.createElement("canvas");
@@ -17,19 +15,54 @@ class RingContainer {
     this.chartCollector.enableClick();
     this.chartCollector.enableMousemove();
 
-    this.ring = new Ring(this.canvas, this.chartCollector, data);
-    this.rectangleButton = new RectangleButton(this.canvas, this.chartCollector, this.ring, data);
+    this.aircraft = new Aircraft(this.canvas, this.chartCollector, data);
+
+    // this.ring = new Ring(this.canvas, this.chartCollector, data);
+    // this.rectangleButton = new RectangleButton(this.canvas, this.chartCollector, this.ring, data);
   }
 
   update(data) {
-    this.rectangleButton.update(data);
-    let ringData = [];
-    this.rectangleButton.rectangles.forEach(r => {
-      if (r.config.fillStyle !== doNotDisplayColor) {
-        ringData.push(r.datum);
-      }
+    // this.rectangleButton.update(data);
+    // let ringData = [];
+    // this.rectangleButton.rectangles.forEach(r => {
+    //   if (r.config.fillStyle !== doNotDisplayColor) {
+    //     ringData.push(r.datum);
+    //   }
+    // });
+    // this.ring.update(ringData);
+  }
+}
+
+class background {
+  constructor(canvas, chartCollector, data) {
+    let c = this.canvas;
+    let cw = parseInt(c.style.width);
+    let ch = parseInt(c.style.height);
+    this.instance = new Line({
+      fillStyle: "#11264f",
+      setting: { x: cw / 2, y: ch * 0.95, radius: ch * 0.05 }
     });
-    this.ring.update(ringData);
+  }
+}
+
+/**
+ * @desc 飞机模块
+ */
+class Aircraft {
+  constructor(canvas, chartCollector, data) {
+    this.canvas = canvas;
+    this.chartCollector = chartCollector;
+
+    let c = this.canvas;
+    let cw = parseInt(c.style.width);
+    let ch = parseInt(c.style.height);
+    this.instance = new Circle({
+      fillStyle: "#11264f",
+      setting: { x: cw / 2, y: ch * 0.95, radius: ch * 0.05 }
+    });
+    this.instance.setChartCollector(this.chartCollector);
+
+    this.chartCollector.draw();
   }
 }
 
@@ -691,5 +724,4 @@ class RectangleButton {
   }
 }
 
-
-export default RingContainer;
+export default Container;

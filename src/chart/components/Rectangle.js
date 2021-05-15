@@ -11,14 +11,13 @@ import { defaultConfig, contextConfig, mergeConfig } from "../config/index";
 class Rectangle extends Chart {
   /**
    * @desc Rectangle 构造函数
-   * @param {ChartCollector} chartCollector 对象
    * @param {Object} config 配置对象
-   *  @param setting
-   *    @param {Number} x 矩形左上角的 x 坐标。
-   *    @param {Number} y 矩形左上角的 y 坐标。
-   *    @param {Number} width 矩形宽度。
-   *    @param {Number} height 矩形高度。
-   *    @param {Number} radius 矩形边圆角半径。
+   *   @param setting
+   *     @param {Number} x 矩形左上角的 x 坐标。
+   *     @param {Number} y 矩形左上角的 y 坐标。
+   *     @param {Number} width 矩形宽度。
+   *     @param {Number} height 矩形高度。
+   *     @param {Number} radius 矩形边圆角半径。
    */
   constructor(config) {
     super();
@@ -30,7 +29,6 @@ class Rectangle extends Chart {
     this.width = this.config.setting.width;
     this.height = this.config.setting.height;
     this.radius = this.config.setting.radius;
-
     this.setOtherSetting();
   }
 

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>
+    <%= htmlWebpackPlugin.options.title %>
+  </title>
+  <script type="text/javascript" src="<%= htmlWebpackPlugin.files.js %>"></script>
+</head>
+
+<body>
+  <div class="container" style="width:400px;height:400px;"></div>
+  <!-- <canvas id="canvas" width="600" height="600"></canvas> -->
+  <script type="text/javascript">
+    let { Aircraft } = Pepper;
+    let container = document.querySelector(".container");
+    let aircraft = new Aircraft(
+      container,
+      []
+    );
+  </script>
+</body>
+
+</html>

@@ -1,9 +1,16 @@
 # Pepper
 
+## 启动
+
+- 安装依赖 npm install
+- 调试：npm run dev
+- 打包：npm run build
+
 ## 项目目录
 
 - pepper
-  - lib（核心）
+  - src（核心）
+    - components（图形组件文件夹）
     - chart
       - components（基础图形组件文件夹）
       - config（图形组件配置相关文件夹）
@@ -67,9 +74,9 @@ ChartCollector 用于存储当前画布的 canvas 对象和当前画布的所有
 
 EventListenerCollector 类用于处理事件的逻辑；MotionCollector 用于处理动画函数的逻辑；Chart 类用于处理图形组件的逻辑；ChartCollector 类用于处理画布的逻辑
 
-参考 `/lib/chart/components` 自己实现基础组件开发  
-参考 `/components` 自己实现客户端组件开发  
-参考 `/index.html` 客户端实际使用
+参考 `/src/chart/components` 自己实现基础组件开发 
+参考 `/src/components` 自己实现客户端组件开发
+参考 `/public/index.html` 客户端实际使用
 
 ## 应用
 
@@ -78,11 +85,13 @@ EventListenerCollector 类用于处理事件的逻辑；MotionCollector 用于�
 ### 实践
 ### 示例
 
-组件开发示例：`/components/Ring.js`  
-客户端使用示例： `/index.html`
+组件开发示例：`/src/components/Ring.js`  
+客户端使用示例： `/public/index.html`
 
 ## 问题 & 优化
 
 - 通过快排，去掉 this.zIndex
 - Chart 多继承 MotionCollector EventListenerCollector
 - 根据帧速率调整渲染
+- 使用 requestIdleCallback 提高 FPS 性能
+- 用 TS 改造代码
