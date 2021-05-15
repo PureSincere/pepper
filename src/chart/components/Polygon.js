@@ -2,6 +2,7 @@
 
 import utils from "../../helpers/utils";
 import Chart from "../Chart";
+import { defaultConfig, contextConfig, mergeConfig } from "../config/index";
 
 /**
  * @desc Polygon，多边形
@@ -11,11 +12,15 @@ class Polygon extends Chart {
    * @desc Polygon 构造函数
    * @param {Object} config 配置对象
    *   @param setting
-   *     @param {Array<Object>} points 坐标对象数组
+   *     @param {Array<Object<x, y>>} points 坐标对象数组
    */
-  constructor(chartCollector, config, points) {
-    super(chartCollector, config);
-    this.points = points || [];
+  constructor(config) {
+    super();
+    this.config = mergeConfig(defaultConfig, this.constructor.defaultConfig, config);
+    Object.assign(this, this.config.setting)
+    this.setOtherSetting()
+  }
+  setOtherSetting() {
     this.minX = 0;//当前图形区域的最小 x 轴坐标值
     utils.forEach(points, point => {
       if (this.minX > point.x) {
