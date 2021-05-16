@@ -65,6 +65,10 @@ class Circle extends Chart {
         s = this.chartCollector.beforeDrawCurrentFrameTime - this.chartCollector.beforeDrawTime;
         if (s > e) { s = e; }
         this[key] = Tween.Linear(s, sArgs[key], eArgs[key] - sArgs[key], e);
+        // 钩子（动画中,某个键值一帧执行动画中）
+        if (utils.isObject(config.hook) && utils.isFunction(config.hook.animatingByKey)) {
+          config.hook.animatingByKey.call(this, this, val, key, s, e, sArgs, eArgs, Tween);
+        }
         if (s < e) {
           loopNumber++;
         }
@@ -132,11 +136,14 @@ class Circle extends Chart {
    * @param {Object} point 坐标对象
    * @returns {Boolean} 如果指定坐标对象表示的点在当前图形对象内返回 true，否则返回 false
    */
-  hasPoint(point) {
+  hasPoint(point, rule) {
     if (!(utils.isNumber(point.x) && utils.isNumber(point.y))) {
       return false;
     }
     let distance = Math.pow(Math.abs(point.x - this.x), 2) + Math.pow(Math.abs(point.y - this.y), 2) - Math.pow(this.radius, 2);
+    if (rule) {
+      return rule(distance)
+    }
     return distance < 0;
   }
 }
