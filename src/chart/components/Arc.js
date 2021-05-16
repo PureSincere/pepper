@@ -131,7 +131,7 @@ class Arc extends Chart {
   draw() {
     this.context.save();
     utils.forEach(Object.keys(contextConfig), key => {
-      if (typeof this.config[key] !== "undefined") {
+      if (!utils.isUndefined(this.config[key])) {
         this.context[key] = this.config[key];
       }
     });

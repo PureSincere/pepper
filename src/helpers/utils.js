@@ -436,7 +436,7 @@ function merge(/* obj1, obj2, obj3, ... */) {
   function assignValue(val, key) {
     if (isArray(val)) {
       result[key] = [].concat(val);
-    } else if (typeof result[key] === "object" && typeof val === "object") {
+    } else if (utils.isObject(result[key]) && utils.isObject(val)) {
       result[key] = merge(result[key], val);
     } else {
       result[key] = val;
@@ -461,9 +461,9 @@ function deepMerge(/* obj1, obj2, obj3, ... */) {
   function assignValue(val, key) {
     if (isArray(val)) {
       result[key] = JSON.parse(JSON.stringify(val));
-    } else if (typeof result[key] === "object" && typeof val === "object") {
+    } else if (utils.isObject(result[key]) && utils.isObject(val)) {
       result[key] = deepMerge(result[key], val);
-    } else if (typeof val === "object") {
+    } else if (utils.isObject(val)) {
       result[key] = deepMerge({}, val);
     } else {
       result[key] = val;

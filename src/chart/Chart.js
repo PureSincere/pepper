@@ -67,14 +67,14 @@ class Chart extends MotionCollector {
     // 如果 eventListener 不为 Function，则清除当前事件下的全部事件监听函数
     if (!utils.isFunction(eventListener)) {
       if (utils.hasOwnProperty.call(chartCollector.eventCharts, type)) {
-        this.chartCollector.removeEventChart(type, this);
+        this.chartCollector.removeEventChart(this, type);
       }
     }
 
     let eventListeners = this.eventListeners[type];
     if (utils.isArray(eventListeners)) {
       if (eventListeners.length === 0) {
-        this.chartCollector.removeEventChart(type, this);
+        this.chartCollector.removeEventChart(this, type);
       }
     }
   }

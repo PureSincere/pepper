@@ -13,9 +13,9 @@ function mergeConfig(/* config1, config2, config3, ... */) {
   function assignValue(val, key) {
     if (utils.isArray(val)) {
       config[key] = JSON.parse(JSON.stringify(val));
-    } else if (typeof config[key] === "object" && typeof val === "object") {
+    } else if (utils.isObject(config[key]) && utils.isObject(val)) {
       config[key] = mergeConfig(config[key], val);
-    } else if (typeof val === "object") {
+    } else if (utils.isObject(val)) {
       config[key] = mergeConfig({}, val);
     } else {
       if (key === "font") {

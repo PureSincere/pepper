@@ -46,6 +46,7 @@ class ChartCollector {
     this.beforeDrawTime;//绘制图案前的时间
     this.beforeDrawCurrentFrameTime;//绘制当前帧图案前的时间
     this.afterDrawCurrentFrameTime;//绘制当前帧图案后的时间
+    this.isAfterDrawCurrent = true;//绘制当前周期是否结束
 
     // 依赖
     this.eventCharts = Object.create(null);//区分事件类型的事件图形对象集合，每个类型的事件包含图形对象集合
@@ -148,6 +149,8 @@ class ChartCollector {
     });
     if (loopNumber > 0) {
       requestAnimationFrame(this.animate.bind(this));
+    } else if (loopNumber == 0) {
+      this.isAfterDrawCurrent = true
     }
   }
 
@@ -175,6 +178,8 @@ class ChartCollector {
    * @desc 绘制图形对象
    */
   draw() {
+    if (!this.isAfterDrawCurrent) return
+    this.isAfterDrawCurrent = false;
     this.beforeDrawTime = +new Date();
     requestAnimationFrame(this.animate.bind(this));
   }
@@ -244,19 +249,24 @@ class ChartCollector {
    * @param {String} type 事件名称
    * @param {Chart} chart 图形对象
    */
-  removeEventChart(type, chart) {
-    if (!utils.isString(type) || type === "") {
-      return;
+  removeEventChart(chart, type) {
+    let types = []
+    if (!utils.isString(type) || type === "" || utils.isUndefined(type)) {
+      types.push(...Object.keys(this.eventCharts))
+    } else {
+      types.push(type)
     }
-    if (!Object.hasOwnProperty.call(this.eventCharts, type)) {
-      return;
-    }
-    let array = this.eventCharts[type];
-    if (utils.isArray(array)) {
-      for (let i = 0; i < array.length; i++) {
-        if (chart === array[i]) {
-          array.splice(i, 1);
-          break;
+    for (let i = 0; i < types.length; i++) {
+      if (!Object.hasOwnProperty.call(this.eventCharts, type)) {
+        continue;
+      }
+      let array = this.eventCharts[type];
+      if (utils.isArray(array)) {
+        for (let i = 0; i < array.length; i++) {
+          if (chart === array[i]) {
+            array.splice(i, 1);
+            break;
+          }
         }
       }
     }

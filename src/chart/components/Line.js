@@ -24,7 +24,6 @@ class Line extends Chart {
     Object.assign(this, this.config.setting)
     this.setOtherSetting();
   }
-
   setOtherSetting() {
     this.minX = this.config.x1 >= this.config.x2 ? this.config.x2 : this.config.x1;//当前图形区域的最小 x 轴坐标值
   }
@@ -42,12 +41,14 @@ class Line extends Chart {
    *    @param {Function} animated 钩子（动画后）
    */
   update(config) {
-    super.update(config);
+    this.config = mergeConfig(this.config, config);
+    this.motions = [];
 
     let
       s = this.chartCollector.beforeDrawCurrentFrameTime - this.chartCollector.beforeDrawTime,
-      e = this.config.animationDurationTime,
-      eArgs, sArgs;
+      e = this.config.animationDurationTime;
+
+    let eArgs, sArgs;
     Object.assign(sArgs, this.config.setting)
     Object.assign(eArgs, config.setting)
 
@@ -90,7 +91,7 @@ class Line extends Chart {
   draw() {
     this.context.save();
     utils.forEach(Object.keys(contextConfig), key => {
-      if (typeof this.config[key] !== "undefined") {
+      if (!utils.isUndefined(this.config[key])) {
         this.context[key] = this.config[key];
       }
     });
@@ -135,7 +136,7 @@ class Line extends Chart {
     let isPointIn = false;
     this.context.save();
     utils.forEach(Object.keys(contextConfig), key => {
-      if (typeof this.config[key] !== "undefined") {
+      if (!utils.isUndefined(this.config[key])) {
         this.context[key] = this.config[key];
       }
     });
@@ -151,5 +152,7 @@ class Line extends Chart {
     return isPointIn;
   }
 }
+
+Line.defaultConfig = {};
 
 export { Line };

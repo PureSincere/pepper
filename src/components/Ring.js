@@ -147,7 +147,7 @@ class Ring {
             },
             animationDurationTime,
             hook: {
-              animating: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
+              animatingKey: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
                 if (key === "text") {
                   return parseInt(Tween.Linear(s, parseInt(sArgs[key]), parseInt(eArgs[key]) - parseInt(sArgs[key]), e)) + "%";
                 } else if (key === "x" || key === "y") {
@@ -257,7 +257,7 @@ class Ring {
               },
               animationDurationTime,
               hook: {
-                animating: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
+                animatingKey: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
                   if (key === "text") {
                     return parseInt(Tween.Linear(s, parseInt(sArgs[key]), parseInt(eArgs[key]) - parseInt(sArgs[key]), e)) + "%";
                   } else if (key === "x" || key === "y") {
@@ -292,7 +292,7 @@ class Ring {
               },
               animationDurationTime,
               hook: {
-                animating: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
+                animatingKey: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
                   if (key === "text") {
                     return parseInt(Tween.Linear(s, parseInt(sArgs[key]), parseInt(eArgs[key]) - parseInt(sArgs[key]), e)) + "%";
                   } else if (key === "x" || key === "y") {
@@ -448,7 +448,7 @@ class Ring {
             },
             animationDurationTime,
             hook: {
-              animating: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
+              animatingKey: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
                 if (key === "text") {
                   return parseInt(Tween.Linear(s, parseInt(sArgs[key]), parseInt(eArgs[key]) - parseInt(sArgs[key]), e)) + "%";
                 } else if (key === "x" || key === "y") {
@@ -595,7 +595,6 @@ class RectangleButton {
           rectangle = this.rectangles.splice(i, 1)[0];
           this.chartCollector.removeChart(rectangle);
           this.chartCollector.removeEventChart(rectangle);
-          // 
         }
       }
       let rectangleText;
@@ -604,7 +603,6 @@ class RectangleButton {
           rectangleText = this.rectangleTexts.splice(i, 1)[0];
           this.chartCollector.removeChart(rectangleText);
           this.chartCollector.removeEventChart(rectangleText);
-          // 
         }
       }
     };
@@ -669,7 +667,7 @@ class RectangleButton {
           },
           animationDurationTime,
           hook: {
-            animating: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
+            animatingKey: (chart, val, key, s, e, sArgs, eArgs, Tween) => {
               if (key === "text") {
                 return eArgs[key];
               } else if (key === "x") {

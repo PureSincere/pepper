@@ -42,7 +42,8 @@ class Rectangle extends Chart {
    *    @param {Number} height 矩形高度。
    *    @param {Number} radius 矩形边圆角半径。
    *  @param {Object} hook
-   *    @param {Function} animating 钩子（动画中）
+   *    @param {Function} animating 钩子（动画中,所有键值一帧结束动画中）
+   *    @param {Function} animatingByKey 钩子（动画中,某个键值一帧执行动画中）
    *    @param {Function} animated 钩子（动画后）
    */
   update(config) {
@@ -54,7 +55,6 @@ class Rectangle extends Chart {
       e = this.config.animationDurationTime,
       sArgs = {},
       eArgs = {};
-
     utils.forEach(this.config.setting, (val, key) => {
       sArgs[key] = this[key];
       eArgs[key] = val;
@@ -70,14 +70,18 @@ class Rectangle extends Chart {
         s = this.chartCollector.beforeDrawCurrentFrameTime - this.chartCollector.beforeDrawTime;
         if (s > e) { s = e; }
         this[key] = Tween.Linear(s, sArgs[key], eArgs[key] - sArgs[key], e);
+        // 钩子（动画中,某个键值一帧执行动画中）
+        if (utils.isObject(config.hook) && utils.isFunction(config.hook.animatingByKey)) {
+          config.hook.animatingByKey.call(this, this, val, key, s, e, sArgs, eArgs, Tween);
+        }
         if (s < e) {
           loopNumber++;
         }
       });
       this.setOtherSetting();
-      // 执行钩子（动画中）
+      // 钩子（动画中,所有键值一帧结束动画中）
       if (utils.isObject(config.hook) && utils.isFunction(config.hook.animating)) {
-        config.hook.animating.call(this, this);
+        config.hook.animating.call(this, this, s, e, sArgs, eArgs, Tween)
       }
       if (loopNumber === 0) {
         this.removeMotion(motion);
@@ -101,7 +105,7 @@ class Rectangle extends Chart {
   draw() {
     this.context.save();
     utils.forEach(Object.keys(contextConfig), key => {
-      if (typeof this.config[key] !== "undefined") {
+      if (!utils.isUndefined(this.config[key])) {
         this.context[key] = this.config[key];
       }
     });

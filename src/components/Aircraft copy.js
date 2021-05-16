@@ -28,16 +28,16 @@ class Container {
       canvas: this.canvas,
       chartCollector: this.chartCollector,
       container: this,
-      data: Object.assign({ point: { x: this.canvas.width / 2, y: this.canvas.height * (1 - 0.025) } }, { launchDirection: 'up' })
-    });
-    this.hero2 = new Aircraft({
-      canvas: this.canvas,
-      chartCollector: this.chartCollector,
-      container: this,
-      data: Object.assign({ point: { x: this.canvas.width / 2, y: this.canvas.height * (1 - 0.025) } }, { launchDirection: 'up' })
+      data: Object.assign({ point: { x: this.canvas.width / 2, y: parseInt(this.canvas.height) * (1 - 0.025) } }, { role: 'hero', launchDirection: 'up', fillStyle: "#009ad6" })
     });
     this.aircrafts.push(this.hero)
-    this.aircrafts.push(this.hero2)
+
+    // this.aircrafts.push(new Aircraft({
+    //   canvas: this.canvas,
+    //   chartCollector: this.chartCollector,
+    //   container: this,
+    //   data: Object.assign({ point: { x: this.canvas.width / 2, y: 0 - parseInt(this.canvas.height) * 0.025 } }, { role: 'enemy', launchDirection: 'down', fillStyle: "#840228" })
+    // }))
 
     let keyCodeSwitch = (event) => {
       let suffix = ''
@@ -79,11 +79,12 @@ class Container {
     }, false)
 
     setInterval(() => {
+      if (!this.chartCollector.isAfterDrawCurrent) return
       this.aircrafts.forEach(a => {
         a.update()
       })
       this.chartCollector.draw()
-    }, 20)
+    }, defaultConfig.animationDurationTime)
     // this.ring = new Ring(this.canvas, this.chartCollector, data);
     // this.rectangleButton = new RectangleButton(this.canvas, this.chartCollector, this.ring, data);
   }
@@ -152,7 +153,7 @@ class Aircraft {
 
     this.instance = new Circle({
       data: this.data,
-      fillStyle: "#009ad6",
+      fillStyle: this.data.fillStyle,
       setting: {
         x: this.data.point.x,
         y: this.data.point.y - this.ch * 0.025,
@@ -181,6 +182,12 @@ class Aircraft {
         launchDirection: this.data.launchDirection
       }))
     }
+
+    // 敌人
+    if (this.data.role === 'enemy') {
+      this.data.point.y += 3
+    }
+
     this.instance.update({
       setting: {
         x: this.data.point.x,
@@ -193,11 +200,12 @@ class Aircraft {
             return this.data.point.x = chart.radius
           } else if (chart.x + chart.radius >= this.cw) {
             this.data.point.x = this.cw - chart.radius
-          } else if (chart.y - chart.radius <= 0) {
-            this.data.point.y = chart.radius
           } else if (chart.y + chart.radius >= this.ch) {
             this.data.point.y = this.ch - chart.radius
           }
+          // else if (chart.y - chart.radius <= 0) {
+          //   this.data.point.y = chart.radius
+          // }
         }
       }
     });
@@ -278,15 +286,43 @@ class Bullet {
       },
       hook: {
         animating: (chart, s, e, sArgs, eArgs, Tween) => {
+          // let isAfterDrawCurrent = this.chartCollector.isAfterDrawCurrent
+          this.chartCollector.isAfterDrawCurrent = false
+          // 子弹撞墙
           if (chart.y <= 0 || chart.y - chart.height >= parseInt(this.canvas.style.height)) {
-            this.chartCollector.removeChart(chart);
-            this.chartCollector.removeEventChart(chart);
+            this.chartCollector.removeChart(this);
+            this.chartCollector.removeEventChart(this);
             this.aircraft.bullets.forEach((b, i, a) => {
               if (b === this) {
                 a.splice(i, 1)
               }
             })
           }
+          // // 子弹击中目标
+          // this.aircraft.container.aircrafts.forEach(a => {
+          //   let hasPoint = a.instance.hasPoint.bind(a.instance)
+          //   if (hasPoint({ x: chart.x, y: chart.y }) || hasPoint({ x: chart.x + chart.width, y: chart.height })) {
+          //     this.chartCollector.removeChart(this);
+          //     this.chartCollector.removeEventChart(this);
+          //     this.aircraft.bullets.forEach((b, i, a) => {
+          //       if (b === this) {
+          //         a.splice(i, 1)
+          //       }
+          //     })
+          //   }
+          // })
+          // this.chartCollector.isAfterDrawCurrent = isAfterDrawCurrent
+          // if (chart.y <= 0 || chart.y - chart.height >= parseInt(this.canvas.style.height)) {
+
+
+          // this.chartCollector.removeChart(chart);
+          // this.chartCollector.removeEventChart(chart);
+          // this.aircraft.bullets.forEach((b, i, a) => {
+          //   if (b === this) {
+          //     a.splice(i, 1)
+          //   }
+          // })
+          // }
         }
       }
     });

@@ -20,9 +20,10 @@ class Polygon extends Chart {
     Object.assign(this, this.config.setting)
     this.setOtherSetting()
   }
+
   setOtherSetting() {
     this.minX = 0;//当前图形区域的最小 x 轴坐标值
-    utils.forEach(points, point => {
+    utils.forEach(this.points, point => {
       if (this.minX > point.x) {
         this.minX = point.x;
       }
@@ -31,28 +32,80 @@ class Polygon extends Chart {
 
   /**
    * @desc 更新
-   * @param {Array<Object>} points 坐标对象数组
+   * @param {Object} config 配置对象
+   *  @param setting
+   *    @param {Array<Object<x, y>>} points 坐标对象数组
+   *  @param {Object} hook
+   *    @param {Function} animating 钩子（动画中）
+   *    @param {Function} animated 钩子（动画后）
    */
-  update(config, points) {
-    super.update(config);
+  update(config) {
+    this.config = mergeConfig(this.config, config);
+    this.motions = [];
+
+    let
+      s = this.chartCollector.beforeDrawCurrentFrameTime - this.chartCollector.beforeDrawTime,
+      e = this.config.animationDurationTime;
+
+    let eArgs, sArgs;
+    Object.assign(sArgs, this.config.setting)
+    Object.assign(eArgs, config.setting)
+
+    let motion = () => {
+      let loopNumber = 0;
+
+      utils.forEach(this.config.setting, (val, key) => {
+        if (utils.isUndefined(this[key])) {
+          this[key] = val;
+          return;
+        }
+        s = this.chartCollector.beforeDrawCurrentFrameTime - this.chartCollector.beforeDrawTime;
+        if (s > e) { s = e; }
+        this[prop] = Tween.Linear(s, sArgs[prop], eArgs[prop] - sArgs[prop], e);
+
+        if (s < e) {
+          loopNumber++;
+        }
+      });
+
+      this.setOtherSetting();
+      // 执行钩子（动画中）
+      if (utils.isObject(config.hook) && utils.isFunction(config.hook.animating)) {
+        config.hook.animating.call(this, this);
+      }
+      if (loopNumber === 0) {
+        this.removeMotion(motion);
+        // 执行钩子（动画后）
+        if (utils.isObject(config.hook) && utils.isFunction(config.hook.animated)) {
+          config.hook.animated.call(this, this);
+        }
+      }
+    }
+    this.addMotion(motion);
   }
 
   /**
    * @desc 绘制图形对象
    */
   draw() {
-    super.draw(() => {
-      if (utils.isEmpty(this.points)) {
-        return;
+    this.context.save();
+    utils.forEach(Object.keys(contextConfig), key => {
+      if (!utils.isUndefined(this.config[key])) {
+        this.context[key] = this.config[key];
       }
-      this.context.beginPath();
-      this.context.moveTo(this.points[0].x, this.points[0].y)
-      utils.forEach(this.points, point => {
-        this.context.lineTo(point.x, point.y);
-      });
-      this.context.stroke();
-      this.context.closePath();
     });
+    if (utils.isEmpty(this.points)) {
+      return;
+    }
+    this.context.beginPath();
+    this.context.moveTo(this.points[0].x, this.points[0].y)
+    utils.forEach(this.points, point => {
+      this.context.lineTo(point.x, point.y);
+    });
+    this.context.stroke();
+    // this.context.fill();
+    this.context.closePath();
+    this.context.restore();
   }
 
   /**
@@ -84,7 +137,11 @@ class Polygon extends Chart {
     }
     let isPointIn = false
     this.context.save();
-    this.setContextStyle();
+    utils.forEach(Object.keys(contextConfig), key => {
+      if (!utils.isUndefined(this.config[key])) {
+        this.context[key] = this.config[key];
+      }
+    });
     this.context.beginPath();
     this.context.moveTo(this.points[0].x, this.points[0].y)
     utils.forEach(this.points, point => {
@@ -99,4 +156,6 @@ class Polygon extends Chart {
   }
 }
 
-export { Polygon };
+Polygon.defaultConfig = {};
+
+export { Polygon }

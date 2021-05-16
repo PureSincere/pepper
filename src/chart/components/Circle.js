@@ -72,7 +72,7 @@ class Circle extends Chart {
       this.setOtherSetting();
       // 执行钩子（动画中）
       if (utils.isObject(config.hook) && utils.isFunction(config.hook.animating)) {
-        config.hook.animating.call(this, this);
+        config.hook.animating.call(this, this, s, e, sArgs, eArgs, Tween)
       }
       if (loopNumber === 0) {
         this.removeMotion(motion);
@@ -80,6 +80,7 @@ class Circle extends Chart {
         if (utils.isObject(config.hook) && utils.isFunction(config.hook.animated)) {
           config.hook.animated.call(this, this);
         }
+        return
       }
     }
     this.addMotion(motion);
@@ -96,13 +97,14 @@ class Circle extends Chart {
   draw() {
     this.context.save();
     utils.forEach(Object.keys(contextConfig), key => {
-      if (typeof this.config[key] !== "undefined") {
+      if (!utils.isUndefined(this.config[key])) {
         this.context[key] = this.config[key];
       }
     });
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, 0);
-    this.context.stroke();
+    // this.context.stroke();
+    this.context.fill();
     this.context.closePath();
     this.context.restore();
   }

@@ -38,6 +38,7 @@ class Text extends Chart {
    *    @param {Number} x 文本起始点 x 坐标轴的坐标值
    *    @param {Number} y 文本起始点 y 坐标轴的坐标值
    *  @param {Object} hook
+   *    @param {Function} animatingByKey 钩子（动画中,某个键值一帧执行动画中）
    *    @param {Function} animating 钩子（动画中）
    *    @param {Function} animated 钩子（动画后）
    */
@@ -65,9 +66,9 @@ class Text extends Chart {
         }
         s = this.chartCollector.beforeDrawCurrentFrameTime - this.chartCollector.beforeDrawTime;
         if (s > e) { s = e; }
-        // 执行钩子（动画中）
-        if (utils.isObject(config.hook) && utils.isFunction(config.hook.animating)) {
-          let result = config.hook.animating.call(this, this, val, key, s, e, sArgs, eArgs, Tween);
+        // 钩子（动画中,某个键值一帧执行动画中）
+        if (utils.isObject(config.hook) && utils.isFunction(config.hook.animatingKey)) {
+          let result = config.hook.animatingKey.call(this, this, val, key, s, e, sArgs, eArgs, Tween);
           this[key] = utils.isUndefined(result) ? Tween.Linear(s, sArgs[key], eArgs[key] - sArgs[key], e) : result;
         } else {
           this[key] = Tween.Linear(s, sArgs[key], eArgs[key] - sArgs[key], e);
@@ -77,6 +78,10 @@ class Text extends Chart {
         }
       });
       this.setOtherSetting();
+      // 钩子（动画中,所有键值一帧结束动画中）
+      if (utils.isObject(config.hook) && utils.isFunction(config.hook.animating)) {
+        config.hook.animating.call(this, this, s, e, sArgs, eArgs, Tween);
+      }
       if (loopNumber === 0) {
         this.removeMotion(motion);
         // 执行钩子（动画后）
@@ -130,7 +135,7 @@ class Text extends Chart {
   draw() {
     this.context.save();
     utils.forEach(Object.keys(contextConfig), key => {
-      if (typeof this.config[key] !== "undefined") {
+      if (!utils.isUndefined(this.config[key])) {
         this.context[key] = this.config[key];
       }
     });

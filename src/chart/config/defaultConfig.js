@@ -5,7 +5,7 @@ import utils from "../../helpers/utils";
 // 通用默认配置
 const commonConfig = {
   zIndex: 0,
-  animationDurationTime: 300
+  animationDurationTime: 20
 };
 
 // 字体默认配置

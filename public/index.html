@@ -10,16 +10,87 @@
 </head>
 
 <body>
-  <div class="container" style="width:400px;height:400px;"></div>
+  <div class="container" style="width:600px;height:600px;margin:0 auto;"></div>
   <!-- <canvas id="canvas" width="600" height="600"></canvas> -->
   <script type="text/javascript">
     let { Aircraft } = Pepper;
     let container = document.querySelector(".container");
-    let aircraft = new Aircraft(
-      container,
-      []
+
+    let aircraftContainer = new Aircraft(
+      container
     );
+    // setTimeout(() => {
+    //   console.log(point.y)
+    //   point.y = 0
+    //   aircraftContainer.aircraft.update({ point })
+    // }, 1000)
   </script>
+
+  <!-- <script type="text/javascript">
+    let { Ring } = Pepper;
+    let container = document.querySelector(".container");
+    let ring = new Ring(
+      container,
+      [
+        {
+          key: "A",
+          value: 1000,
+          color: "#0FBDA6"
+        },
+        {
+          key: "B",
+          value: 2000,
+          color: "#F86B83"
+        },
+        {
+          key: "C",
+          value: 2000,
+          color: "#F9D26A"
+        },
+        {
+          key: "D",
+          value: 3000,
+          color: "#3896E9"
+        }
+      ]
+    );
+    setInterval(() => {
+      let data = [
+        {
+          key: "A",
+          value: 1000,
+          color: "#0FBDA6"
+        },
+        {
+          key: "B",
+          value: 2000,
+          color: "#F86B83"
+        },
+        {
+          key: "C",
+          value: 2000,
+          color: "#F9D26A"
+        },
+        {
+          key: "D",
+          value: 3000,
+          color: "#3896E9"
+        },
+        {
+          key: "E",
+          value: Math.random() * 1000,
+          color: "#0ACFF6"
+        },
+        {
+          key: "F",
+          value: Math.random() * 1000,
+          color: "#F89D83"
+        },
+      ];
+      // data.length = parseInt(Math.random() * 10);
+      ring.update(data);
+    }, 3000);
+  </script> -->
 </body>
 
 </html>
