@@ -125,13 +125,7 @@ class ChartCollector {
     }
     // 执行
     for (let i = this.charts.length - 1; i >= 0; i--) {
-      try {
-        this.charts[i][fn].apply(this.charts[i]);
-      }
-      catch (e) {
-        debugger
-      }
-
+      this.charts[i][fn].apply(this.charts[i]);
     }
   }
 

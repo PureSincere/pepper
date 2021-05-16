@@ -1,5 +1,11 @@
 "use strict";
 
+import '../../public/index.css'
+import imgHeroPath from '../../public/img/hero1.png'
+import imgEnemy0Path from '../../public/img/篮球.png'
+import imgEnemy1Path from '../../public/img/蔡徐坤.png'
+import imgEnemy2Path from '../../public/img/蔡徐坤1.png'
+
 import { defaultConfig } from "../chart/config";
 import utils from "../helpers/utils";
 import { ChartCollector, Rectangle, Polygon, Circle, Text } from "../index";
@@ -19,12 +25,30 @@ class Container {
     this.aircrafts = []
     this.dispatch = [] // 调度函数集合,统一一个时间间隔执行 kill 操作和生成敌人操作
 
+    this.imgHero = new Image()
+    this.imgHero.src = imgHeroPath
+    this.imgEnemy0 = new Image()
+    this.imgEnemy1 = new Image()
+    this.imgEnemy2 = new Image()
+    this.imgEnemy0.src = imgEnemy0Path
+    this.imgEnemy1.src = imgEnemy1Path
+    this.imgEnemy2.src = imgEnemy2Path
 
     this.hero = new Aircraft({
       canvas: this.canvas,
       chartCollector: this.chartCollector,
       container: this,
-      data: Object.assign({ point: { x: this.canvas.width / 2, y: this.canvas.height * (1 - 0.025) } }, { role: 'hero', launchDirection: 'up', fillStyle: "#009ad6" })
+      data: Object.assign(
+        {
+          point: { x: this.canvas.width / 2, y: this.canvas.height * (1 - 0.025) }
+        },
+        {
+          role: 'hero',
+          launchDirection: 'up',
+          fillStyle: "#009ad6",
+          img: this.imgHero
+        }
+      )
     });
     this.aircrafts.push(this.hero)
 
@@ -118,7 +142,7 @@ class Container {
             // x: radius * 6 * (i + 1),
             y: -radius
           }
-        }, { role: 'enemy', launchDirection: 'down', fillStyle: '#840228' })
+        }, { role: 'enemy', launchDirection: 'down', fillStyle: '#840228', img: this[`imgEnemy${parseInt(Math.random() * 100 % 3)}`] })
       });
       this.aircrafts.push(enemy)
     }
@@ -272,6 +296,15 @@ class Aircraft {
               }
             }
           })
+        },
+        draw: chart => {
+          chart.context.drawImage(
+            this.data.img,
+            chart.x - chart.radius,
+            chart.y - chart.radius,
+            chart.radius * 2,
+            chart.radius * 2
+          )
         }
       }
     });
@@ -363,7 +396,7 @@ class Bullet {
   }
 
   update() {
-    const step = parseInt(this.canvas.style.height) * 0.05
+    const step = parseInt(this.canvas.style.height) * 0.025
     this.data.point.y += this.launchDirection === 'up' ? -step : step
     this.instance.update({
       setting: {

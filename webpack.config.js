@@ -12,6 +12,22 @@ const config = {
     library: "Pepper",
     libraryTarget: "var"
   },
+  module: {
+    rules: [
+      { test: /.css$/, use: ['style-loader', 'css-loader'] },
+      {
+        test: /\.(jpg|png|jpeg|gif)$/,
+        use: {
+          loader: 'url-loader',
+          options: {
+            name: '[name]_[hash].[ext]',
+            outputPath: 'images/',
+            // limit: 2048 // 限制文件大小小于2048字节，使用base64方式打包
+          }
+        }
+      },
+    ]
+  },
   entry: {
     pepper: path.resolve(__dirname, "./public/index.js"),
   },

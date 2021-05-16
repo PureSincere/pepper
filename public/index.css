@@ -1,0 +1,28 @@
+.container {
+  position: relative;
+  overflow: hidden;
+}
+
+.container .background{
+  position: absolute;
+  top: 0;left:0;right:0;bottom: 0;
+  width: 600px;
+  height: 19600px;
+  background: url('img/background.png') repeat;
+  z-index: -1;
+  /* background: url('img/background.png') repeat; */
+  /* background-position-x: 0px;
+  background-position-y: 0px;
+  background-repeat: repeat;
+  background-size: 600px 600px; */
+  animation: scoll 100s linear infinite alternate-reverse;
+}
+
+@keyframes scoll{ 
+  from { 
+    top:0; 
+  } 
+  to { 
+    top:-19000px; 
+  } 
+}

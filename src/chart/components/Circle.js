@@ -105,9 +105,13 @@ class Circle extends Chart {
         this.context[key] = this.config[key];
       }
     });
+    if (utils.isObject(this.config.hook) && utils.isFunction(this.config.hook.draw)) {
+      this.config.hook.draw.call(this, this)
+      return
+    }
     this.context.beginPath();
     this.context.arc(this.x, this.y, this.radius, 0, Math.PI * 2, 0);
-    // this.context.stroke();
+    this.context.stroke();
     this.context.fill();
     this.context.closePath();
     this.context.restore();
