@@ -2,16 +2,16 @@ const path = require('path');
 
 // 配置文件导出类型为单个对象
 const config = {
-  name: "pepper-webpack-config",
+  name: "canvas-frame-webpack-config",
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "dist"),
     // libraryTarget: "commonjs"
-    library: "Pepper",
+    library: "CanvasFrame",
     libraryTarget: "var"
   },
   entry: {
-    pepper: "./index.js"
+    canvasFrame: "./index.js"
   },
   optimization: {
     minimize: false

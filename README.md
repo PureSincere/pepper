@@ -1,75 +1,67 @@
-# Pepper
+[toc]
 
-## 项目目录
-
-- pepper
-  - lib（核心）
-    - chart
-      - components（基础图形组件文件夹）
-      - config（图形组件配置相关文件夹）
-      - Chart.js（图形组件类）
-      - ChartCollector.js（图形容器类）
-    - event
-      - Event.js（事件对象类）
-      - EventListenerCollector（事件函数容器）
-    - helpers（工具文件夹）
-    - motion
-      - MotionCollector.js（动画函数容器）
-    - index.js
-  - index.js
-
-Chart 类继承了 MotionCollector 类和 EventListenerCollector 类  
-ChartCollector 用于存储当前画布的 canvas 对象和当前画布的所有图形组件
+# CanvasFrame
 
 ## API
 
-### Chart
-
-- void setChartCollector(chartCollector)
-  - 说明：设置 chartCollector
+- ChartCollector create(canvas)
+  - 说明：创建图形容器对象
   - 参数
-    - chartCollector：ChartCollector 对象
+    - canvas：canvas 对象
+  - 返回：ChartCollector 对象，图形容器对象
 
-- void notifyMotions()
-  - 说明：广播执行当前对象注册的所有动画函数
+- void draw()
+  - 说明：绘制所有图形对象
+
+- void enableClick()
+  - 说明：注册 canvas 对象的 click 事件（图形的 click 事件）
+
+- void enableMousemove()
+  - 说明：注册 canvas 对象的 mousemove 事件（图形的 mousemove、mouseover 和 mouseout 事件）
 
 - void addEventListener(type, eventListener)
-  - 说明：新增事件监听函数
+  - 说明：注册事件监听函数
   - 参数
     - type：事件名称
     - eventListener：事件监听函数
-  - 返回：返回自身
 
 - void removeEventListener(type, eventListener)
-  - 说明：删除事件监听函数
+  - 说明：注销事件监听函数
   - 参数
     - type：事件名称
     - eventListener：事件监听函数
 
-- void compareZIndex(chart)
-  - 说明：比对当前图形对象与指定图形对象的 zIndex 的大小
+- Circle Circle(x, y, radius)
+  - 说明：创建圆形图形对象
   - 参数
-    - chart：Chart 图形对象
+    - x：圆的中心（圆心）的 x 轴坐标
+    - y：圆的中心（圆心）的 y 轴坐标
+    - radius：圆的半径弧度
+  - 返回：Circle 对象，圆形图形对象
 
-- void compareMinX(chart)
-  - 说明：比对当前图形对象与指定图形对象的最小 x 坐标轴坐标值的大小
+- Polygon Polygon(x, y, radius)
+  - 说明：创建多边形图形对象
   - 参数
-    - chart：Chart 图形对象
+    - points：坐标对象数组
+  - 返回：Polygon 对象，多边形图形对象
 
-- void comparePointX(point)
-  - 说明：比对当前图形对象的最小 x 坐标轴坐标值与指定坐标对象的 x 坐标轴坐标值的大小
+- Rectangle Rectangle(x, y, radius)
+  - 说明：创建矩形图形对象
   - 参数
-    - point：坐标对象
+    - x：矩形左上角的 x 坐标
+    - y：矩形左上角的 y 坐标
+    - width：矩形的宽度，以像素计
+    - height：矩形的高度，以像素计
+  - 返回：Rectangle 对象，矩形图形对象
 
-## 最佳实践
-
-主要的核心类在 Chart、ChartCollector、EventListenerCollector 和 MotionCollector。  
-
-EventListenerCollector 类用于处理事件的逻辑；MotionCollector 用于处理动画函数的逻辑；Chart 类用于处理图形组件的逻辑；ChartCollector 类用于处理画布的逻辑
-
-参考 `/lib/chart/components` 自己实现基础组件开发  
-参考 `/components` 自己实现客户端组件开发  
-参考 `/index.html` 客户端实际使用
+- Line Line(x, y, radius)
+  - 说明：创建直线图形
+  - 参数
+    - x1：直线起始点 x 坐标轴的坐标值
+    - y1：直线起始点 y 坐标轴的坐标值
+    - x2：直线结束点 x 坐标轴的坐标值
+    - y2：直线结束点 y 坐标轴的坐标值
+  - 返回：Line 对象，直线图形
 
 ## 应用
 
@@ -78,11 +70,91 @@ EventListenerCollector 类用于处理事件的逻辑；MotionCollector 用于�
 ### 实践
 ### 示例
 
-组件开发示例：`/components/Ring.js`  
-客户端使用示例： `/index.html`
+文件 `index.html`
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+
+  <style type="text/css">
+  </style>
+  <script type="text/javascript" src="dist/canvasFrame.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script type="text/javascript">
+    let canvas = document.getElementById("canvas");
+
+    let canvasFrame = CanvasFrame.create(canvas);
+    canvasFrame.enableClick();
+    canvasFrame.enableMousemove();
+
+    let circle = canvasFrame.Circle(100, 100, 100);
+    circle.addEventListener("click", (...args) => {
+      console.log("click at circle");
+    });
+    circle.addEventListener("mousemove", (...args) => {
+      console.log("mousemove at circle");
+    });
+    circle.addEventListener("mouseover", (...args) => {
+      console.log("mouseover at circle");
+    });
+    circle.addEventListener("mouseout", (...args) => {
+      console.log("mouseout at circle");
+    });
+
+    let data = [
+      { x: 250, y: 300 },
+      { x: 200, y: 350 },
+      { x: 300, y: 350 }
+    ];
+    let polygon = canvasFrame.Polygon(data);
+    polygon.addEventListener("click", (...args) => {
+      console.log("click at polygon");
+    });
+    polygon.addEventListener("mousemove", (...args) => {
+      console.log("mousemove at polygon");
+    });
+    polygon.addEventListener("mouseover", (...args) => {
+      console.log("mouseover at polygon");
+    });
+    polygon.addEventListener("mouseout", (...args) => {
+      console.log("mouseout at polygon");
+    });
+
+    canvasFrame.draw();
+
+    console.log("circle.chartCollector", circle.chartCollector);
+    console.log("circle.chartCollector === polygon.chartCollecto: ", polygon.chartCollector === circle.chartCollector);
+  </script>
+</body>
+
+</html>
+```
+
+## 参考
+
+- https://www.cnblogs.com/zhangjk1993/p/6139146.html
+- https://www.cnblogs.com/chengduxiaoc/p/7664397.html
 
 ## 问题 & 优化
 
-- 通过快排，去掉 this.zIndex
+- Grid，Bar 除了构造函数，其它函数入参不要用 this.config
+- index.html yData 长度
+- index.html 确定下不要 bar.update，改成 canvasFrame.update 行不行得通
+- 配置对象搞成一个共用的
+- 配置对象注册后，数据响应驱动
+- 去掉 canvasFrame.Bar 这种方式，实现全配置
+- 解决 addMotion 不要重复注册
+- 图像加多一个包含图像数组属性，方便树形查找、修改
 - Chart 多继承 MotionCollector EventListenerCollector
+- update callback 改成钩子
+- 清除区域
 - 根据帧速率调整渲染
+- 局部清除
+- 开源

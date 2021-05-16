@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <title>demo</title>
+  <meta name="renderer" content="webkit" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+  <meta name="viewport"
+    content="width=device-width,height=device-height,initial-scale=1.0,minimum-scale=1.0,user-scalable=no">
+</head>
+
+<body>
+
+
+  <div id="box" style="background-color:#58a;width:0;height:20px;line-height:20px;">0%</div>
+  <script type="text/javascript">
+    /* 缓动 */
+    /*
+     * Tween
+     * t: current time（当前时间长度）
+     * b: beginning value（初始值）
+     * c: change in value（变化量）
+     * d: duration（持续时间）
+     * 返回每一次执行后的变化量
+    */
+    var Tween = {
+      Linear: function (t, b, c, d) { return c * t / d + b; },
+      Quad: {
+        easeIn: function (t, b, c, d) {
+          return c * (t /= d) * t + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return -c * (t /= d) * (t - 2) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          if ((t /= d / 2) < 1) return c / 2 * t * t + b;
+          return -c / 2 * ((--t) * (t - 2) - 1) + b;
+        }
+      },
+      Cubic: {
+        easeIn: function (t, b, c, d) {
+          return c * (t /= d) * t * t + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return c * ((t = t / d - 1) * t * t + 1) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          if ((t /= d / 2) < 1) return c / 2 * t * t * t + b;
+          return c / 2 * ((t -= 2) * t * t + 2) + b;
+        }
+      },
+      Quart: {
+        easeIn: function (t, b, c, d) {
+          return c * (t /= d) * t * t * t + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          if ((t /= d / 2) < 1) return c / 2 * t * t * t * t + b;
+          return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
+        }
+      },
+      Quint: {
+        easeIn: function (t, b, c, d) {
+          return c * (t /= d) * t * t * t * t + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          if ((t /= d / 2) < 1) return c / 2 * t * t * t * t * t + b;
+          return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
+        }
+      },
+      Sine: {
+        easeIn: function (t, b, c, d) {
+          return -c * Math.cos(t / d * (Math.PI / 2)) + c + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return c * Math.sin(t / d * (Math.PI / 2)) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b;
+        }
+      },
+      Expo: {
+        easeIn: function (t, b, c, d) {
+          return (t == 0) ? b : c * Math.pow(2, 10 * (t / d - 1)) + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return (t == d) ? b + c : c * (-Math.pow(2, -10 * t / d) + 1) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          if (t == 0) return b;
+          if (t == d) return b + c;
+          if ((t /= d / 2) < 1) return c / 2 * Math.pow(2, 10 * (t - 1)) + b;
+          return c / 2 * (-Math.pow(2, -10 * --t) + 2) + b;
+        }
+      },
+      Circ: {
+        easeIn: function (t, b, c, d) {
+          return -c * (Math.sqrt(1 - (t /= d) * t) - 1) + b;
+        },
+        easeOut: function (t, b, c, d) {
+          return c * Math.sqrt(1 - (t = t / d - 1) * t) + b;
+        },
+        easeInOut: function (t, b, c, d) {
+          if ((t /= d / 2) < 1) return -c / 2 * (Math.sqrt(1 - t * t) - 1) + b;
+          return c / 2 * (Math.sqrt(1 - (t -= 2) * t) + 1) + b;
+        }
+      },
+      Elastic: {
+        easeIn: function (t, b, c, d, a, p) {
+          var s;
+          if (t == 0) return b;
+          if ((t /= d) == 1) return b + c;
+          if (typeof p == "undefined") p = d * .3;
+          if (!a || a < Math.abs(c)) {
+            s = p / 4;
+            a = c;
+          } else {
+            s = p / (2 * Math.PI) * Math.asin(c / a);
+          }
+          return -(a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
+        },
+        easeOut: function (t, b, c, d, a, p) {
+          var s;
+          if (t == 0) return b;
+          if ((t /= d) == 1) return b + c;
+          if (typeof p == "undefined") p = d * .3;
+          if (!a || a < Math.abs(c)) {
+            a = c;
+            s = p / 4;
+          } else {
+            s = p / (2 * Math.PI) * Math.asin(c / a);
+          }
+          return (a * Math.pow(2, -10 * t) * Math.sin((t * d - s) * (2 * Math.PI) / p) + c + b);
+        },
+        easeInOut: function (t, b, c, d, a, p) {
+          var s;
+          if (t == 0) return b;
+          if ((t /= d / 2) == 2) return b + c;
+          if (typeof p == "undefined") p = d * (.3 * 1.5);
+          if (!a || a < Math.abs(c)) {
+            a = c;
+            s = p / 4;
+          } else {
+            s = p / (2 * Math.PI) * Math.asin(c / a);
+          }
+          if (t < 1) return -.5 * (a * Math.pow(2, 10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p)) + b;
+          return a * Math.pow(2, -10 * (t -= 1)) * Math.sin((t * d - s) * (2 * Math.PI) / p) * .5 + c + b;
+        }
+      },
+      Back: {
+        easeIn: function (t, b, c, d, s) {
+          if (typeof s == "undefined") s = 1.70158;
+          return c * (t /= d) * t * ((s + 1) * t - s) + b;
+        },
+        easeOut: function (t, b, c, d, s) {
+          if (typeof s == "undefined") s = 1.70158;
+          return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+        },
+        easeInOut: function (t, b, c, d, s) {
+          if (typeof s == "undefined") s = 1.70158;
+          if ((t /= d / 2) < 1) return c / 2 * (t * t * (((s *= (1.525)) + 1) * t - s)) + b;
+          return c / 2 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2) + b;
+        }
+      },
+      Bounce: {
+        easeIn: function (t, b, c, d) {
+          return c - Tween.Bounce.easeOut(d - t, 0, c, d) + b;
+        },
+        easeOut: function (t, b, c, d) {
+          if ((t /= d) < (1 / 2.75)) {
+            return c * (7.5625 * t * t) + b;
+          } else if (t < (2 / 2.75)) {
+            return c * (7.5625 * (t -= (1.5 / 2.75)) * t + .75) + b;
+          } else if (t < (2.5 / 2.75)) {
+            return c * (7.5625 * (t -= (2.25 / 2.75)) * t + .9375) + b;
+          } else {
+            return c * (7.5625 * (t -= (2.625 / 2.75)) * t + .984375) + b;
+          }
+        },
+        easeInOut: function (t, b, c, d) {
+          if (t < d / 2) {
+            return Tween.Bounce.easeIn(t * 2, 0, c, d) * .5 + b;
+          } else {
+            return Tween.Bounce.easeOut(t * 2 - d, 0, c, d) * .5 + c * .5 + b;
+          }
+        }
+      }
+    };
+
+
+    //例子
+    //用requestAnimationFrame+缓动函数
+    var box = document.getElementById("box");
+    var s = 0, e = 100, sV = parseInt(box.style.width), eV = 500;
+    var fn = function () {
+      s++;
+      box.style.width = Tween.Linear(s, sV, eV - sV, e) + "px";
+      if (s < e) { requestAnimationFrame(fn); }
+    };
+    fn();
+
+
+    ////测试数据
+    //var s=0,e=100,sV=0,eV=500;
+    //function fn(){
+    //    s++;
+    //    console.log(Tween.Linear(s,sV,eV-sV,e));
+    //    if(s<e)fn();
+    //}
+    //fn();
+
+
+  </script>
+
+  <!-- <script type="text/javascript">
+    /*
+  **精灵父类
+  */
+    var Sprite = function () { };
+    Sprite.prototype = {
+      /*
+      **每个精灵对象自己的draw函数
+      */
+      draw: function () {
+      },
+      /*
+      **添加运动方式
+      */
+      addMotionWay: function (fun) {
+        this.motionFunc.push(fun);
+      },
+      /*
+      **运动计算
+      */
+      countMotionFun: function (stepTime) {
+        for (var i = this.motionFunc.length; i--;) {
+          this.motionFunc[i].call(this, stepTime / 100);
+        }
+        this.draw();
+      }
+    }
+
+    /*
+    ** Canvas类 管理所有动画实体sprites
+    */
+    var Canvas = function (id) {
+      //关联canvas元素
+      this.canvas = document.getElementById(id);
+      //精灵字典
+      this.sprites = [];
+      //当前帧数
+      this.frame;
+      this.frameNum;
+      //所关联canvas元素上下文对象
+      this.ctx = this.canvas.getContext('2d');
+      //帧长
+      this.stepTime;
+      //触发器
+      this.sT;
+    }
+    Canvas.prototype = {
+      /*
+      **初始化
+      */
+      init: function () {
+        this.fps = 0;
+        //记录最后一帧的时间
+        this.lastFrameTime = (new Date()).getTime();
+        this.frame = 0;//当前帧数归0
+        this.frameNum = 30;//每30帧计算一次fps
+        this.stepTime = 1;//和fps成反比
+      },
+      /*
+      **开始
+      */
+      begin: function () {
+        this.sT = setTimeout((function (param) {
+          return function () { param.render(); }
+        })(this), this.stepTime);
+      },
+      /*
+      **渲染,
+      */
+      render: function () {
+        //计算fps,参考oldj http://oldj.net/
+        this.frame++;
+        if (this.frame % this.frameNum == 0) {
+          //
+          t = (new Date()).getTime();
+          this.fps = Math.round((this.frameNum * 10000) / (t - this.lastFrameTime)) / 10;
+          this.lastFrameTime = t;
+          showFps(this.fps);
+          // 动态调整 step_time ，保证 fps 恒定
+          if (this.fps < 29.6 && this.stepTime > 10) {
+            this.stepTime--;
+          } else if (this.fps > 30.4) {
+            this.stepTime++;
+          }
+        }
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        //调用每个精灵的运动方程
+        for (var i in this.sprites) {
+          if (typeof (this.sprites[i]) == "function") continue;
+          this.sprites[i].countMotionFun(this.stepTime);
+        }
+        this.sT = setTimeout((function (param) {
+          return function () { param.render(); }
+        })(this), this.stepTime);
+      },
+      /*
+      **添加动画元素
+      */
+      addSprite: function (name, sprite) {
+        this.sprites[name] = sprite;
+      },
+      /*
+      **删除动画元素
+      */
+      removeSprite: function (name) {
+        if (this.sprites[name]) {
+          delete this.sprites[name];
+        }
+      },
+      /*
+      **停止动画
+      */
+      stop: function () {
+        clearInterval(this.sT)
+      },
+      clear: function () {
+        for (var i in this.sprites) {
+          if (typeof (this.sprites[i]) == "function") continue;
+          delete this.sprites[i];
+        }
+      }
+    }
+
+  </script> -->
+
+
+</body>
+
+</html>

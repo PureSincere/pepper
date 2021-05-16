@@ -4,77 +4,110 @@
 <head>
   <meta charset="UTF-8">
   <title></title>
-  <script type="text/javascript" src="dist/pepper.js"></script>
+
+  <style type="text/css">
+    html,
+    body {
+      background: #666666;
+    }
+  </style>
+  <script type="text/javascript" src="dist/canvasFrame.js"></script>
 </head>
 
 <body>
-  <div class="container" style="width:400px;height:400px;"></div>
-  <!-- <canvas id="canvas" width="600" height="600"></canvas> -->
+  <canvas id="canvas" width="600" height="600"></canvas>
   <script type="text/javascript">
-    let { Ring } = Pepper;
-    let container = document.querySelector(".container");
-    let ring = new Ring(
-      container,
-      [
-        {
-          key: "A",
-          value: 1000,
-          color: "#0FBDA6"
-        },
-        {
-          key: "B",
-          value: 2000,
-          color: "#F86B83"
-        },
-        {
-          key: "C",
-          value: 2000,
-          color: "#F9D26A"
-        },
-        {
-          key: "D",
-          value: 3000,
-          color: "#3896E9"
-        }
-      ]
-    );
-    setInterval(() => {
-      let data = [
-        {
-          key: "A",
-          value: 1000,
-          color: "#0FBDA6"
-        },
-        {
-          key: "B",
-          value: 2000,
-          color: "#F86B83"
-        },
-        {
-          key: "C",
-          value: 2000,
-          color: "#F9D26A"
-        },
-        {
-          key: "D",
-          value: 3000,
-          color: "#3896E9"
-        },
-        {
-          key: "E",
-          value: Math.random() * 1000,
-          color: "#0ACFF6"
-        },
-        {
-          key: "F",
-          value: Math.random() * 1000,
-          color: "#F89D83"
-        },
-      ];
-      // data.length = parseInt(Math.random() * 10);
-      ring.update(data);
-    }, 3000);
+    let canvas, canvasFrame, bar;
 
+    canvas = document.getElementById("canvas");
+    let
+      xData = [2001, 2002, 2003, 2004, 2005, 2006, 2001, 2002, 2003, 2004, 2005, 2006],
+      yData = [2442, 3454, 6457, 788, 1233, 7001, 2442, 3454, 6457, 788, 4523, 7001]
+    config = {
+      // type: "bar",
+      type: "brokenLine",
+      top: 30,
+      bottom: 100,
+      left: 30,
+      right: 30,
+      height: 470,
+      width: 540,
+      lineWidth: 2,
+      fontSize: 12,
+      font: "12px sans-serif",
+      textAlign: "right",
+      animationDurationTime: 500,
+      bar: {
+        // barWidth: 0.3,
+        strokeStyle: "#008ec4",
+        // fillStyle: "#ff0000",
+        emphasis: {
+          // fillStyle: "#ff0000"
+        }
+      },
+      grid: {
+        lineWidth: 1,
+        lineDash: true,
+        strokeStyle: "rgb(230, 162, 60, .3)",
+        zIndex: 10,
+      },
+      xAxis: {
+        data: xData,
+        lineWidth: 2,
+        label: {
+          toAxisSpace: 6,
+        },
+        zIndex: 10
+      },
+      yAxis: {
+        data: yData,
+        lineWidth: 2,
+        label: {
+          toAxisSpace: 6,
+          splitNumber: 5,
+          position: "middle"
+        }
+      }
+    };
+    instance = CanvasFrame.create(canvas);
+    instance.create(config);
+
+    let change = false;
+    setInterval(() => {
+      change = !change;
+      xData = [2001, 2002, 2003, 2004, 2005, 2006, 2001, 2002, 2003, 2004, 2005, 2006];
+      yData = [2442, 3454, 3445, 788, 1233, 3502, 2442, 3454, 6457, 788, 4523, 4511];
+      // for (let i = 0; i < yData.length - 1; i++) {
+      //   yData[i] = yData[i + 1];
+      // }
+      // yData[yData.length - 1] += Math.floor(Math.random() * 3000);
+      // for (let i = 0; i < 1; i++) {
+      //   yData = yData.concat(yData);
+      //   xData = xData.concat(xData);
+      // }
+      console.log(yData)
+      // yData = yData.map(d => {
+      //   return d + Math.floor(Math.random() * 3000);
+      // });
+      xData = xData.map(d => {
+        return d + (change ? Math.floor(Math.random() * 10000) : 2442);
+      });
+      yData = yData.map(d => {
+        return d + (change ? Math.floor(Math.random() * 10000000) : 2442);
+      });
+      xData.length = yData.length = Math.floor(Math.random() * yData.length + 1);
+      instance.update({
+        xAxis: {
+          data: xData
+        },
+        yAxis: {
+          data: yData
+        }
+      });
+      // console.log(`window 对象占用内存：${instance.sizeof(window)}`);
+    }, 1000);
+
+    console.log(instance);
   </script>
 </body>
 
