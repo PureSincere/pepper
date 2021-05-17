@@ -2,9 +2,9 @@
 
 import '../../public/index.css'
 import imgHeroPath from '../../public/img/hero1.png'
-import imgEnemy0Path from '../../public/img/篮球.png'
-import imgEnemy1Path from '../../public/img/蔡徐坤.png'
-import imgEnemy2Path from '../../public/img/蔡徐坤1.png'
+import imgEnemy0Path from '../../public/img/enemy0.png'
+import imgEnemy1Path from '../../public/img/enemy1.png'
+import imgEnemy2Path from '../../public/img/enemy2.png'
 
 import { defaultConfig } from "../chart/config";
 import utils from "../helpers/utils";
