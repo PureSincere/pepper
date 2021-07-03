@@ -7,7 +7,7 @@
     "dev": "webpack-dev-server --open",
     "build": "webpack --config webpack.config.js"
   },
-  "author": "PureSincere",
+  "author": "sincere",
   "license": "ISC",
   "devDependencies": {
     "clean-webpack-plugin": "^4.0.0-alpha.0",
