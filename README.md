@@ -9,21 +9,19 @@
 
 ![alt text](demo/飞机大战/aircraft.gif)
 
-<video controls src="demo/飞机大战/aircraft.mp4" title="Title"></video>
-
 https://github.com/user-attachments/assets/13e0c53a-2327-4b7f-85a9-8a2188d69ec7.MP4
 
 - `demo/图表/bar.html`
 
 ![alt text](demo/图表/bar.gif)
 
-<video controls src="demo/图表/bar.mp4" title="Title"></video>
+https://github.com/user-attachments/assets/d2146cb5-6c73-44f8-87f4-a4e54f412e35.mp4
 
 - `demo/图表/brokenLine.html`
 
 ![alt text](demo/图表/brokenLine.gif)
 
-<video controls src="demo/图表/brokenLine.mp4" title="Title"></video>
+https://github.com/user-attachments/assets/a06662b0-882b-42aa-af95-703679f9523c.mp4
 
 ## 启动
 
