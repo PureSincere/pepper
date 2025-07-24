@@ -8,16 +8,19 @@
 - `demo/飞机大战/aircraft.html`
 
 ![alt text](demo/飞机大战/aircraft.gif)
+
 <video controls src="demo/飞机大战/aircraft.mp4" title="Title"></video>
 
 - `demo/图表/bar.html`
 
 ![alt text](demo/图表/bar.gif)
+
 <video controls src="demo/图表/bar.mp4" title="Title"></video>
 
 - `demo/图表/brokenLine.html`
 
 ![alt text](demo/图表/brokenLine.gif)
+
 <video controls src="demo/图表/brokenLine.mp4" title="Title"></video>
 
 ## 启动
