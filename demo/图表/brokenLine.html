@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title></title>
+
+  <style type="text/css">
+    html,
+    body {
+      background: #666666;
+    }
+  </style>
+  <script type="text/javascript" src="canvasFrame.js"></script>
+</head>
+
+<body>
+  <canvas id="canvas" width="600" height="600"></canvas>
+  <script type="text/javascript">
+    let canvas, bar;
+
+    canvas = document.getElementById("canvas");
+    let
+      xData = [2001, 2002, 2003, 2004, 2005, 2006, 2001, 2002, 2003, 2004, 2005, 2006],
+      yData = [2442, 3454, 6457, 788, 1233, 7001, 2442, 3454, 6457, 788, 4523, 7001]
+    config = {
+      // type: "bar",
+      type: "brokenLine",
+      top: 30,
+      bottom: 100,
+      left: 30,
+      right: 30,
+      height: 470,
+      width: 540,
+      lineWidth: 2,
+      fontSize: 12,
+      font: "12px sans-serif",
+      textAlign: "right",
+      animationDurationTime: 500,
+      bar: {
+        // barWidth: 0.3,
+        strokeStyle: "#008ec4",
+        // fillStyle: "#ff0000",
+        emphasis: {
+          // fillStyle: "#ff0000"
+        }
+      },
+      grid: {
+        lineWidth: 1,
+        lineDash: true,
+        strokeStyle: "rgb(230, 162, 60, .3)",
+        zIndex: 10,
+      },
+      xAxis: {
+        data: xData,
+        lineWidth: 2,
+        label: {
+          toAxisSpace: 6,
+        },
+        zIndex: 10
+      },
+      yAxis: {
+        data: yData,
+        lineWidth: 2,
+        label: {
+          toAxisSpace: 6,
+          splitNumber: 5,
+          position: "middle"
+        }
+      }
+    };
+    instance = CanvasFrame.create(canvas);
+    instance.create(config);
+
+    let change = false;
+    setInterval(() => {
+      change = !change;
+      xData = [2001, 2002, 2003, 2004, 2005, 2006, 2001, 2002, 2003, 2004, 2005, 2006];
+      yData = [2442, 3454, 3445, 788, 1233, 3502, 2442, 3454, 6457, 788, 4523, 4511];
+      // for (let i = 0; i < yData.length - 1; i++) {
+      //   yData[i] = yData[i + 1];
+      // }
+      // yData[yData.length - 1] += Math.floor(Math.random() * 3000);
+      // for (let i = 0; i < 1; i++) {
+      //   yData = yData.concat(yData);
+      //   xData = xData.concat(xData);
+      // }
+      console.log(yData)
+      // yData = yData.map(d => {
+      //   return d + Math.floor(Math.random() * 3000);
+      // });
+      xData = xData.map(d => {
+        return d + (change ? Math.floor(Math.random() * 10000) : 2442);
+      });
+      yData = yData.map(d => {
+        return d + (change ? Math.floor(Math.random() * 10000000) : 2442);
+      });
+      xData.length = yData.length = Math.floor(Math.random() * yData.length + 1);
+      instance.update({
+        xAxis: {
+          data: xData
+        },
+        yAxis: {
+          data: yData
+        }
+      });
+      // console.log(`window 对象占用内存：${instance.sizeof(window)}`);
+    }, 1000);
+
+    console.log(instance);
+  </script>
+</body>
+
+</html>

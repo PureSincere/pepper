@@ -74,7 +74,7 @@ ChartCollector 用于存储当前画布的 canvas 对象和当前画布的所有
 
 EventListenerCollector 类用于处理事件的逻辑；MotionCollector 用于处理动画函数的逻辑；Chart 类用于处理图形组件的逻辑；ChartCollector 类用于处理画布的逻辑
 
-参考 `/src/chart/components` 自己实现基础组件开发 
+参考 `/src/chart/components` 自己实现基础组件开发
 参考 `/src/components` 自己实现客户端组件开发
 参考 `/public/index.html` 客户端实际使用
 
@@ -85,8 +85,12 @@ EventListenerCollector 类用于处理事件的逻辑；MotionCollector 用于�
 ### 实践
 ### 示例
 
-组件开发示例：`/src/components/Ring.js`  
-客户端使用示例： `/public/index.html`
+<!-- - 组件开发示例：`/src/components/Ring.js`   -->
+<!-- - 客户端使用示例： `/public/index.html` -->
+
+- `demo/飞机大战/aircraft.html`
+- `demo/图表/bar.html`
+- `demo/图表/brokenLine.html`
 
 ## 问题 & 优化
 
